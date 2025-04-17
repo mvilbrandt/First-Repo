@@ -7,4 +7,4 @@
 
 [Week 11 html](https://mvilbrandt.github.io/First-Repo/week11.html)
 
-[Here](blog.md) is my youtube!
+[Here](blog.md) is my blog!
