@@ -1,0 +1,74 @@
+---
+title: "Week11"
+author: "Mason"
+date: "2025-04-03"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(ggplot2)
+library(tidyverse)
+library(dplyr)
+library(ggrepel)
+```
+
+### Scaling
+
+```{r}
+ggplot(mpg, aes(displ, hwy)) + geom_point(aes(color=class, size=cyl)) + scale_size_continuous(range=c(0.5,3)) #Sets the range for the sizes for continuous variable
+
+ggplot(mpg, aes(displ, hwy)) + geom_point(aes(color=class, size=cyl)) + scale_size_binned(range=c(0.5,3), breaks=c(4,6,8)) #Categorizes the sizes into bins between 4 and 6, and between 6 and 8
+
+ggplot(mpg, aes(displ, cty)) + geom_point(aes(size=displ), alpha = 0.4 ) + scale_size_binned(range=c(0,5), breaks=c(5)) 
+
+ggplot(mpg, aes(displ, hwy)) + geom_point(aes(size=drv, color=class), alpha = 0.8) + scale_size_discrete(range=c(1,3)) #changes the range of sizes for a discrete variable
+
+ggplot(mpg, aes(displ, hwy)) + geom_point(aes(size=drv, color=class), alpha = 0.8) + scale_size_manual(values=c(1,1,3)) #manually set the sizes for each type of the given variable
+
+ggplot(mpg, aes(displ, hwy)) + geom_point(aes(color=class), alpha = 1) + scale_color_brewer(palette = "Set1") #Color brewer allows to change the color scheme. They have both discrete and continuous color sets
+
+ggplot(mpg, aes(displ, hwy)) + geom_point(aes(color=class)) + scale_color_viridis_d(option = 'turbo') #color viridis has other color schemes
+
+ggplot(mpg, aes(displ, hwy)) + geom_point(aes(color=class)) + scale_color_manual(values=c('red', 'black','black','black','black','black','black')) #can set colors manually also
+
+ggplot(iris, aes(Sepal.Length, Sepal.Width)) + geom_point(aes(color=Species, shape=Species)) + scale_color_brewer(palette='Set2')
+
+ggplot(mpg, aes(displ, hwy)) + geom_point(aes(color=cyl, shape=drv)) + scale_color_gradient(low='steelblue', high='limegreen') #allows you to set the high and low ends of the color for continuous variables
+
+ggplot(iris, aes(Sepal.Length, Sepal.Width)) + geom_point(aes(color=Petal.Length)) + scale_color_gradient(low='darkred', high='tan')
+
+ggplot(mpg, aes(displ,hwy)) + geom_point(alpha=0.5) + scale_x_continuous(limit=c(0,10), breaks=c(0,5,10)) + scale_y_continuous(limit=c(0,50), breaks=c(0,25,50)) #Sets the x and y bounds of the graph, breaks defines where the axis numbers are
+
+
+ggplot(mpg, aes(drv)) + geom_bar() + scale_x_discrete(limits=c('4','r'), labels=c('4-Wheel Drive', 'Reverse-Drive')) #selects the columns being used. You can set the order and remove a column if you want. Labels set the name of the columns
+```
+
+
+
+
+```{r}
+
+internet =  read.csv("~/Documents/Journ 677/Week 11/number-of-internet-users.csv")
+continents = internet %>% filter(Entity == 'World' | Entity == 'Asia' | Entity == 'Europe' | Entity == 'Africa' | Entity == 'North America' | Entity == 'South America' | Entity == 'Oceania')
+
+last_points <- continents %>%
+  group_by(Entity) %>%
+  filter(Year == max(Year))
+
+ggplot(continents, aes(Year, Number.of.Internet.users)) + geom_point(aes(color=Entity)) + geom_line(aes(color=Entity), size=0.5) + scale_x_continuous(limits=c(1960,2030), breaks=c(1960, 1970,1980,1990,2000,2010,2021)) + scale_y_continuous(
+    limits = c(0, 5000000000), # Adjust y-axis limits
+    breaks = c(0, 1000000000, 2000000000, 3000000000, 4000000000, 5000000000),labels = c('0', '1 Billion', '2 Billion', '3 Billion', '4 Billion', '5 Billion')) + scale_color_manual(values=c('steelblue', 'sienna','forestgreen','gold4','purple4','darkred','blue4')) +
+  geom_text_repel(data=last_points, mapping=aes(label=Entity, color=Entity), size=3, nudge_x = 5) + 
+  labs(title = 'Number of people using the Internet', subtitle = 'Number of people who use the Internet in the last three months.', y= "", x = '') + 
+  geom_hline(yintercept = c(1000000000, 2000000000, 3000000000, 4000000000, 5000000000), color = 'lightgrey', linetype = 'dashed') + 
+  theme(
+    panel.background = element_rect(fill='white'),
+    legend.position = "none",
+    plot.title = element_text(family = 'times new roman', face='bold'))
+    
+```
+
