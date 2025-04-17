@@ -2,7 +2,11 @@
 title: "Week11"
 author: "Mason"
 date: "2025-04-03"
-output: html_document
+output:
+    html_document:
+      prettydoc::html_pretty:
+      theme: yeti
+      toc: yes
 ---
 
 ```{r setup, include=FALSE}
